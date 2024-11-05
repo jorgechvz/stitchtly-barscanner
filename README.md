@@ -91,7 +91,7 @@ To understand how to optimize and extend the functionality of your app, check ou
 
 ## Web App
 
-We create a web app using React, Tailwind Css and NestJS, if you'd like to try it out. Check out [Stitchtly BarScanner Web App](https://github.com/jorgechvz/textile-warehouse) for more details.
+I create a web app using React, Tailwind CSS and NestJS, if you'd like to try it out. Check out [Stitchtly BarScanner Web App](https://github.com/jorgechvz/textile-warehouse) for more details.
 
 ### License
 
