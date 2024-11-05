@@ -2,6 +2,12 @@
 
 Welcome to **Stitchtly BarScanner**, an intuitive and powerful React Native app designed for seamless Bluetooth device connections and efficient Bar code scanning. Built using [Expo](https://expo.dev), our app provides a smooth user experience, from connecting to devices to scanning barcodes effortlessly.
 
+### Mobile App for Android
+
+If you'd like to download the mobile app, you can do so here, and it's ready to use (for now, only Android is supported):
+
+- [Stitchtly BarScanner Android App](https://expo.dev/accounts/jorgechvz98/projects/stitchtly-barscanner/builds/683545fb-a67b-443d-9975-231ca283102e)
+
 ## Features
 
 - **Effortless Bluetooth Connection**: Connect to your ESP32 devices with ease and maintain a persistent connection across app sessions.
@@ -85,4 +91,8 @@ To understand how to optimize and extend the functionality of your app, check ou
 
 ## Web App
 
-We create a web app using React, Tailwind Css and NestJS, if you'd like to try it out. Check out [Stitchtly-BarScanner Web App](https://github.com/jorgechvz/textile-warehouse) for more details.
+We create a web app using React, Tailwind Css and NestJS, if you'd like to try it out. Check out [Stitchtly BarScanner Web App](https://github.com/jorgechvz/textile-warehouse) for more details.
+
+### License
+
+This project is licensed under the MIT License.
