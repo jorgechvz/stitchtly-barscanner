@@ -1,50 +1,87 @@
-# Welcome to your Expo app 👋
+# Stitchtly-BarScanner 📱
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Welcome to **Stitchtly-BarScanner**, an intuitive and powerful React Native app designed for seamless Bluetooth device connections and efficient Bar code scanning. Built using [Expo](https://expo.dev), our app provides a smooth user experience, from connecting to devices to scanning barcodes effortlessly.
 
-## Get started
+## Features
 
-1. Install dependencies
+- **Effortless Bluetooth Connection**: Connect to your ESP32 devices with ease and maintain a persistent connection across app sessions.
+- **Smart Bar Code Scanning**: Quickly and efficiently scan Bar codes to send data to your connected devices.
+- **Persistent Authentication**: Users stay logged in and connected, even after exiting the app, ensuring a streamlined experience.
 
-   ```bash
-   npm install
-   ```
+---
 
-2. Start the app
+## Getting Started
 
-   ```bash
-    npx expo start
-   ```
+To set up and run Stitchtly-BarScanner, follow these steps:
 
-In the output, you'll find options to open the app in a
+### 1. Prerequisites
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Make sure you have [Node.js](https://nodejs.org) and [npm](https://www.npmjs.com) installed on your machine.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 2. Install Dependencies
 
-## Get a fresh project
-
-When you're ready, run:
+Navigate to your project directory and run:
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 3. Launch the App
 
-## Learn more
+Navigate to your project directory and run:
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npx expo start
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+From here, you can choose how to run your app:
 
-## Join the community
+- [Development Build](https://docs.expo.dev/develop/development-builds/introduction/): Ideal for comprehensive testing and development.
+- [Android Emulator](https://docs.expo.dev/workflow/android-studio-emulator/): Test your app on a simulated Android device.
+- [iOS Simulator](https://docs.expo.dev/workflow/ios-simulator/): Test your app on a simulated iOS device.
+- [Expo Go](https://expo.dev/go): A convenient way to preview your app using the Expo Go app.
 
-Join our community of developers creating universal apps.
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## App Workflow
+
+1. **Start Screen:** The app opens with a "Let’s Start" screen, introducing the user to Stitchtly-BarScanner.
+2. **Login:** If the user is not logged in, they are directed to the login page. Successful login ensures they remain authenticated, even after restarting the app.
+3. **Bluetooth Connection:** A dialog appears for the user to connect to an ESP32 device. Once connected, the connection remains active across sessions.
+4. **Bar Code Scanning:** Upon successful connection, the user is redirected to the Bar code scanner to scan and send data to the device.
+5. **Persistent Sessions:** Both the login and Bluetooth connection states are preserved, ensuring a seamless user experience every time.
+
+---
+
+## Persistence and State Management
+
+We use AsyncStorage to persist user authentication and Bluetooth connection status, ensuring a continuous and uninterrupted workflow.
+
+- **Authentication**: Users remain logged in, eliminating the need to re-enter credentials on app restart.
+- **Bluetooth Connection**: If a device is connected, the app remembers the connection and avoids showing the connection dialog unnecessarily.
+
+---
+
+## Code Structure
+
+- **/app:** Contains all the primary screens, including the start, layout, login, device connection, and Bar scanner.
+- **/components:** Modular and reusable components such as DeviceConnectionModal.
+- **/hooks:** Custom hooks for managing Bluetooth connections using react-native-ble-plx.
+- **/context:** State management using React Context API.
+- **/utils:** Utility functions, including data encoding and storage helpers.
+
+---
+
+## Learn More About Stitchtly-BarScanner
+
+To understand how to optimize and extend the functionality of your app, check out these resources:
+
+- **Expo Documentation:** Comprehensive guides to enhance your Expo project.
+- **React Native BLE Documentation:** Learn more about managing Bluetooth Low Energy (BLE) connections.
+- **AsyncStorage Documentation:** Explore how to manage persistent storage in React Native.
+
+---
+
+## Web App
+
+We create a web app using React, Tailwind Css and NestJS, if you'd like to try it out. Check out [Stitchtly-BarScanner Web App](https://github.com/jorgechvz/textile-warehouse) for more details.
