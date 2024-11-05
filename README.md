@@ -77,6 +77,7 @@ We use AsyncStorage to persist user authentication and Bluetooth connection stat
 To understand how to optimize and extend the functionality of your app, check out these resources:
 
 - **Expo Documentation:** Comprehensive guides to enhance your Expo project.
+- **Expo Camera:** Learn more about the camera component in Expo.
 - **React Native BLE Documentation:** Learn more about managing Bluetooth Low Energy (BLE) connections.
 - **AsyncStorage Documentation:** Explore how to manage persistent storage in React Native.
 
