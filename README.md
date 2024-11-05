@@ -1,4 +1,4 @@
-# Stitchtly-BarScanner 📱
+# Stitchtly BarScanner 📱
 
 Welcome to **Stitchtly-BarScanner**, an intuitive and powerful React Native app designed for seamless Bluetooth device connections and efficient Bar code scanning. Built using [Expo](https://expo.dev), our app provides a smooth user experience, from connecting to devices to scanning barcodes effortlessly.
 
