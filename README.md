@@ -1,6 +1,6 @@
 # Stitchtly BarScanner 📱
 
-Welcome to **Stitchtly BarScanner**, an intuitive and powerful React Native app designed for seamless Bluetooth device connections and efficient Bar code scanning. Built using [Expo](https://expo.dev), our app provides a smooth user experience, from connecting to devices to scanning barcodes effortlessly.
+Welcome to **Stitchtly BarScanner**, an intuitive and powerful React Native app designed for seamless BLE (Bluetooth Low Energy) device connections and efficient Bar code scanning. Built using [Expo](https://expo.dev), our app provides a smooth user experience, from connecting to devices to scanning barcodes effortlessly.
 
 ### Mobile App for Android
 
@@ -10,7 +10,7 @@ If you'd like to download the mobile app, you can do so here, and it's ready to 
 
 ## Features
 
-- **Effortless Bluetooth Connection**: Connect to your ESP32 devices with ease and maintain a persistent connection across app sessions.
+- **Effortless BLE Connection**: Connect to your ESP32 devices with ease and maintain a persistent connection across app sessions.
 - **Smart Bar Code Scanning**: Quickly and efficiently scan Bar codes to send data to your connected devices.
 - **Persistent Authentication**: Users stay logged in and connected, even after exiting the app, ensuring a streamlined experience.
 
@@ -53,18 +53,18 @@ From here, you can choose how to run your app:
 
 1. **Start Screen:** The app opens with a "Let’s Start" screen, introducing the user to Stitchtly-BarScanner.
 2. **Login:** If the user is not logged in, they are directed to the login page. Successful login ensures they remain authenticated, even after restarting the app.
-3. **Bluetooth Connection:** A dialog appears for the user to connect to an ESP32 device. Once connected, the connection remains active across sessions.
+3. **BLE Connection:** A dialog appears for the user to connect to an ESP32 device. Once connected, the connection remains active across sessions.
 4. **Bar Code Scanning:** Upon successful connection, the user is redirected to the Bar code scanner to scan and send data to the device.
-5. **Persistent Sessions:** Both the login and Bluetooth connection states are preserved, ensuring a seamless user experience every time.
+5. **Persistent Sessions:** Both the login and BLE connection states are preserved, ensuring a seamless user experience every time.
 
 ---
 
 ## Persistence and State Management
 
-We use AsyncStorage to persist user authentication and Bluetooth connection status, ensuring a continuous and uninterrupted workflow.
+We use AsyncStorage to persist user authentication and BLE connection status, ensuring a continuous and uninterrupted workflow.
 
 - **Authentication**: Users remain logged in, eliminating the need to re-enter credentials on app restart.
-- **Bluetooth Connection**: If a device is connected, the app remembers the connection and avoids showing the connection dialog unnecessarily.
+- **BLE Connection**: If a device is connected, the app remembers the connection and avoids showing the connection dialog unnecessarily.
 
 ---
 
@@ -72,7 +72,7 @@ We use AsyncStorage to persist user authentication and Bluetooth connection stat
 
 - **/app:** Contains all the primary screens, including the start, layout, login, device connection, and Bar scanner.
 - **/components:** Modular and reusable components such as DeviceConnectionModal.
-- **/hooks:** Custom hooks for managing Bluetooth connections using react-native-ble-plx.
+- **/hooks:** Custom hooks for managing BLE connections using react-native-ble-plx.
 - **/context:** State management using React Context API.
 - **/utils:** Utility functions, including data encoding and storage helpers.
 
@@ -84,7 +84,7 @@ To understand how to optimize and extend the functionality of your app, check ou
 
 - **Expo Documentation:** Comprehensive guides to enhance your Expo project.
 - **Expo Camera:** Learn more about the camera component in Expo.
-- **React Native BLE Documentation:** Learn more about managing Bluetooth Low Energy (BLE) connections.
+- **React Native BLE Documentation:** Learn more about managing BLE Low Energy (BLE) connections.
 - **AsyncStorage Documentation:** Explore how to manage persistent storage in React Native.
 
 ---
