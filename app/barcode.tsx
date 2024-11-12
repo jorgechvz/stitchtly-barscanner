@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Alert,
   Animated,
 } from "react-native";
 import {
@@ -25,9 +24,13 @@ import {
   AlertDialogTitle,
 } from "@/~/components/ui/alert-dialog";
 import CameraPermission from "@/components/permissions/CameraPermission";
+import { buttonVariants } from "@/~/components/ui/button";
+import { useNavigation } from "expo-router";
+import { CommonActions } from "@react-navigation/native";
 
 export default function QRScannerScreen() {
-  const { writeData } = useBLE();
+  const { writeData, disconnectFromDevice } = useBLE();
+  const navigation = useNavigation();
   const [dialogVisible, setDialogVisible] = useState(false);
   const hideDialog = () => setDialogVisible(false);
   const [permission, requestPermission] = useCameraPermissions();
@@ -62,6 +65,21 @@ export default function QRScannerScreen() {
     setScanned(true);
     setScannedData(data);
   };
+
+  const disconnectDevice = () => {
+    disconnectFromDevice();
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "index" }],
+      })
+    );
+  };
+
+  const onCancel = () => {
+    setScanned(false);
+    setDialogVisible(false);
+  };
   const sendDataToESP32 = () => {
     const base64Data = base64.encode(scannedData);
     setScanned(false);
@@ -77,21 +95,31 @@ export default function QRScannerScreen() {
   return (
     <View className="flex-1 bg-white">
       <AlertDialog open={dialogVisible} onOpenChange={setDialogVisible}>
-        <AlertDialogContent>
+        <AlertDialogContent className="h-[150px] flex flex-col justify-between border-0">
           <AlertDialogHeader>
-            <AlertDialogTitle>
+            <AlertDialogTitle className="text-xl text-primary font-bold">
               Are you sure you want to send this data?
             </AlertDialogTitle>
           </AlertDialogHeader>
           <AlertDialogDescription>
             Bar Code: {scannedData}
           </AlertDialogDescription>
-          <AlertDialogFooter>
-            <AlertDialogCancel>
+          <AlertDialogFooter className="flex flex-row gap-2 justify-end">
+            <AlertDialogCancel
+              onPress={onCancel}
+              className={`${buttonVariants({
+                variant: "secondary",
+              })} px-6 rounded-xl`}
+            >
               <Text>Cancel</Text>
             </AlertDialogCancel>
-            <AlertDialogAction onPress={sendDataToESP32}>
-              <Text>Send</Text>
+            <AlertDialogAction
+              onPress={sendDataToESP32}
+              className={`${buttonVariants({
+                variant: "default",
+              })} px-6 rounded-xl`}
+            >
+              <Text className="text-white">Send</Text>
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -129,10 +157,10 @@ export default function QRScannerScreen() {
         </View>
         <TouchableOpacity
           className="w-2/3 self-center bg-primary py-4 rounded-full mb-8"
-          onPress={() => setScanned(false)}
+          onPress={disconnectDevice}
         >
           <Text className="text-white text-center text-lg font-semibold">
-            Scan Again
+            Disconnect Scanner
           </Text>
         </TouchableOpacity>
       </View>
