@@ -4,9 +4,9 @@ Welcome to **Stitchtly BarScanner**, an intuitive and powerful React Native app 
 
 ### Mobile App for Android
 
-If you'd like to download the mobile app, you can do so here, and it's ready to use (for now, only Android is supported):
+If you'd like to download the mobile app in development mode, you can do so here, and it's ready to use (for now, only Android is supported):
 
-- [Stitchtly BarScanner Android App](https://expo.dev/accounts/jorgechvz98/projects/stitchtly-barscanner/builds/683545fb-a67b-443d-9975-231ca283102e)
+- [Stitchtly BarScanner Android App](https://expo.dev/accounts/jorgechvz98/projects/stitchtly-barscanner/builds/65bcb162-4a01-4306-9aa0-85d756f3b94c)
 
 ## Features
 
@@ -18,7 +18,7 @@ If you'd like to download the mobile app, you can do so here, and it's ready to 
 
 ## Getting Started
 
-To set up and run Stitchtly-BarScanner, follow these steps:
+To set up and run Stitchtly BarScanner, follow these steps:
 
 ### 1. Prerequisites
 
@@ -37,7 +37,7 @@ npm install
 Navigate to your project directory and run:
 
 ```bash
-npx expo start
+npx expo run:android
 ```
 
 From here, you can choose how to run your app:
