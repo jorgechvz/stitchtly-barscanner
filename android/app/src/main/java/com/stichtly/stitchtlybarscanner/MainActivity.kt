@@ -1,4 +1,4 @@
-package com.yourcompany.stitchtlybarscanner
+package com.stichtly.stitchtlybarscanner
 
 import android.os.Build
 import android.os.Bundle

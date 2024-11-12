@@ -35,6 +35,8 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="myapp"/>
         <data android:scheme="com.yourcompany.stitchtlybarscanner"/>
+        <data android:scheme="com.stichtly.stitchtlybarscanner"/>
+        <data android:scheme="exp+stitchtly-barscanner"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>
