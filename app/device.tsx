@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import base64 from 'react-native-base64';
-import DeviceModal from '@/components/device/DeviceConnectionModal';
-import useBLE from '@/hooks/useBLE';
+import React, { useEffect, useState } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import base64 from "react-native-base64";
+import DeviceModal from "@/components/device/DeviceConnectionModal";
+import useBLE from "@/hooks/useBLE";
+import LottieView from 'lottie-react-native';
 
 const Device: React.FC = () => {
   const navigation = useNavigation();
@@ -25,7 +21,7 @@ const Device: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const sendDataToESP32 = () => {
-    const dataToSend = 'Hola desde la app!';
+    const dataToSend = "Hola desde la app!";
     const base64Data = base64.encode(dataToSend);
     writeData(base64Data);
   };
@@ -39,7 +35,12 @@ const Device: React.FC = () => {
 
   useEffect(() => {
     if (connectedDevice) {
-      navigation.navigate('barcode' as never);
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "barcode" }],
+        })
+      );
     }
   }, [connectedDevice, navigation]);
 
@@ -53,24 +54,19 @@ const Device: React.FC = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#f2f2f2]">
+    <View className="flex-1 bg-[#f2f2f2]">
       <View className="flex-1 justify-center items-center">
-        {connectedDevice ? (
-          <Text className="text-2xl font-bold text-black text-center mx-5">
-            This is a test to send data to ESP32
-          </Text>
-        ) : (
-          <Text className="text-2xl font-bold text-black text-center mx-5">
-            Please Connect to a ESP32 Device
-          </Text>
-        )}
+        <Text className="text-2xl font-bold text-primary text-center mx-5">
+          Connect to your device
+        </Text>
+        <LottieView style={{ width: 500, height: 500 }} source={require("../assets/animations/ble-animation.json")} autoPlay loop />
       </View>
       <TouchableOpacity
         onPress={connectedDevice ? disconnectFromDevice : openModal}
-        className="bg-[#FF6060] justify-center items-center h-12 mx-5 mb-1 rounded-lg"
+        className="bg-primary justify-center items-center h-12 mx-5 mb-1 rounded-lg"
       >
         <Text className="text-lg font-bold text-white">
-          {connectedDevice ? 'Disconnect' : 'Connect'}
+          {connectedDevice ? "Disconnect" : "Connect"}
         </Text>
       </TouchableOpacity>
       <DeviceModal
@@ -79,17 +75,7 @@ const Device: React.FC = () => {
         connectToPeripheral={connectToDevice}
         devices={allDevices}
       />
-      {connectedDevice && (
-        <TouchableOpacity
-          onPress={sendDataToESP32}
-          className="bg-[#28a745] justify-center items-center h-12 mx-5 my-2 rounded-lg"
-        >
-          <Text className="text-lg font-bold text-white">
-            Enviar Datos al ESP32
-          </Text>
-        </TouchableOpacity>
-      )}
-    </SafeAreaView>
+    </View>
   );
 };
 

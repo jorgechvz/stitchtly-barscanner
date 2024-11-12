@@ -1,9 +1,10 @@
 import { useContext, useState, useMemo } from "react";
-import { PermissionsAndroid, Platform, Alert } from "react-native";
-import { BleError, Characteristic, Device } from "react-native-ble-plx";
+import { PermissionsAndroid, Platform } from "react-native";
+import { Device } from "react-native-ble-plx";
 import * as ExpoDevice from "expo-device";
 import base64 from "react-native-base64";
 import { BLEContext } from "@/context/BLEContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ESP32_UUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
 const ESP32_CHARACTERISTIC = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
@@ -97,7 +98,6 @@ function useBLE(): BluetoothLowEnergyApi {
       }
 
       if (device && device.name && !isDuplicateDevice(device.id)) {
-        console.log("Dispositivo encontrado:", device.name);
         deviceIds.add(device.id);
         setAllDevices((prevState) => [...prevState, device]);
       }
@@ -110,19 +110,21 @@ function useBLE(): BluetoothLowEnergyApi {
       setConnectedDevice(deviceConnection);
       await deviceConnection.discoverAllServicesAndCharacteristics();
       bleManager.stopDeviceScan();
+      await AsyncStorage.setItem("device_connected", "true");
     } catch (error) {
       console.log("FAILED TO CONNECT", error);
     }
   };
 
-  const disconnectFromDevice = () => {
+  const disconnectFromDevice = async () => {
     if (connectedDevice) {
       bleManager.cancelDeviceConnection(connectedDevice.id);
       setConnectedDevice(null);
+      await AsyncStorage.removeItem("device_connected");
     }
   };
 
-  const onDataUpdate = (
+  /*   const onDataUpdate = (
     error: BleError | null,
     characteristic: Characteristic | null
   ) => {
@@ -136,7 +138,7 @@ function useBLE(): BluetoothLowEnergyApi {
     }
     const rawData = base64.decode(characteristic.value);
     console.log("Datos recibidos del dispositivo:", rawData);
-  };
+  }; */
 
   const writeData = async (data: string) => {
     if (connectedDevice) {
@@ -148,12 +150,11 @@ function useBLE(): BluetoothLowEnergyApi {
           ESP32_CHARACTERISTIC,
           base64Data
         );
-        console.log("Datos enviados: " + data);
       } catch (error) {
-        console.log("Error al enviar datos", error);
+        console.log("Error to write data", error);
       }
     } else {
-      console.log("No hay dispositivo conectado");
+      console.log("Any device is not connected");
     }
   };
 

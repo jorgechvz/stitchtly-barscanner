@@ -1,19 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
 import { loginRequest } from "@/api/auth.api";
-import { LoginType } from "@/types/auth.types";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const USER_INFO_KEY = "user_info";
-
-const saveUserToLocalStorage = async (user: LoginType) => {
-  await AsyncStorage.setItem(USER_INFO_KEY, JSON.stringify(user));
-};
+import { useAuth as useAuthContext } from "@/context/AuthContext";
 
 export const useAuth = () => {
+  const { login } = useAuthContext();
   const loginMutation = useMutation({
     mutationFn: loginRequest,
     onSuccess: (data) => {
-      saveUserToLocalStorage(data);
+      login(data.accessToken);
     },
     onError: (error) => {
       console.log("Error logging in", error);

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
+  StyleSheet,
   TouchableOpacity,
   Alert,
   Animated,
@@ -13,13 +14,26 @@ import {
 } from "expo-camera";
 import useBLE from "@/hooks/useBLE";
 import base64 from "react-native-base64";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/~/components/ui/alert-dialog";
+import CameraPermission from "@/components/permissions/CameraPermission";
 
 export default function QRScannerScreen() {
   const { writeData } = useBLE();
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const hideDialog = () => setDialogVisible(false);
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const scanLinePosition = useRef(new Animated.Value(0)).current;
-
+  const [scannedData, setScannedData] = useState<string>("");
   useEffect(() => {
     Animated.loop(
       Animated.sequence([
@@ -37,69 +51,101 @@ export default function QRScannerScreen() {
     ).start();
   }, [scanLinePosition]);
 
-  const sendDataToESP32 = (dataToSend: string) => {
-    const base64Data = base64.encode(dataToSend);
-    writeData(base64Data);
-  };
-
   if (!permission) return <View />;
   if (!permission.granted) {
-    return (
-      <View className="flex-1 justify-center items-center bg-[#1c1c1c]">
-        <Text className="text-white text-center mb-5 text-lg">
-          Permission to use the camera is required
-        </Text>
-        <TouchableOpacity
-          className="bg-[#333] py-3 px-6 rounded-lg"
-          onPress={requestPermission}
-        >
-          <Text className="text-white text-lg">Grant Permission</Text>
-        </TouchableOpacity>
-      </View>
-    );
+    return <CameraPermission permissionFn={requestPermission} />;
   }
 
-  const handleBarcodeScanned = ({ type, data }: BarcodeScanningResult) => {
+  const handleBarcodeScanned = ({ data }: BarcodeScanningResult) => {
     if (scanned) return;
+    setDialogVisible(true);
     setScanned(true);
-    Alert.alert("Scanned Code", `Type: ${type}, Data: ${data}`);
-    sendDataToESP32(data);
+    setScannedData(data);
+  };
+  const sendDataToESP32 = () => {
+    const base64Data = base64.encode(scannedData);
+    setScanned(false);
+    writeData(base64Data);
+    hideDialog();
   };
 
   const scanLineTranslateY = scanLinePosition.interpolate({
     inputRange: [0, 1],
-    outputRange: [25, 300],
+    outputRange: [5, 275],
   });
 
   return (
-    <View className="flex-1 bg-[#1c1c1c] items-center px-4">
-      <Text className="text-white text-2xl mt-5 text-center">
-        Scan QR Code of the device
-      </Text>
-      <View className="flex-1 w-full rounded-lg overflow-hidden mt-56 mb-56 items-center">
-        <CameraView
-          className="flex-1 w-11/12 rounded-lg"
-          facing="back"
-          onBarcodeScanned={handleBarcodeScanned}
-          barcodeScannerSettings={{ barcodeTypes: ["qr", "ean13"] }}
-        />
-        <Animated.View
-          className="absolute w-[85%] h-0.5 bg-cyan-400"
-          style={{ transform: [{ translateY: scanLineTranslateY }] }}
-        />
-      </View>
-      <View className="flex-row justify-between w-[90%] mb-10">
+    <View className="flex-1 bg-white">
+      <AlertDialog open={dialogVisible} onOpenChange={setDialogVisible}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Are you sure you want to send this data?
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogDescription>
+            Bar Code: {scannedData}
+          </AlertDialogDescription>
+          <AlertDialogFooter>
+            <AlertDialogCancel>
+              <Text>Cancel</Text>
+            </AlertDialogCancel>
+            <AlertDialogAction onPress={sendDataToESP32}>
+              <Text>Send</Text>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <View className="flex-1 px-6">
+        <Text className="font-semibold text-4xl mt-24 text-center">
+          Bar Code Scanner
+        </Text>
+        <Text className="text-gray-900 text-center mt-4">
+          Hold your device over a barcode to scan it
+        </Text>
+        <View className="flex-1 items-center justify-center mb-20">
+          <View className="w-full aspect-square bg-gray-50 rounded-3xl p-6 ">
+            <View className="flex-1 relative m-6">
+              <CameraView
+                style={styles.camera}
+                facing="back"
+                onBarcodeScanned={handleBarcodeScanned}
+                barcodeScannerSettings={{ barcodeTypes: ["qr", "ean13"] }}
+              />
+              <View className="absolute top-0 bottom-0 left-0 right-0 items-center justify-center ">
+                <View className="w-[280px] h-[280px] rounded-lg">
+                  <View className="absolute -top-3 -left-3 w-12 h-12 border-t-[6px] border-l-[6px] border-primary" />
+                  <View className="absolute -top-3 -right-3 w-12 h-12 border-t-[6px] border-r-[6px] border-primary" />
+                  <View className="absolute -bottom-3 -left-3 w-12 h-12 border-b-[6px] border-l-[6px] border-primary" />
+                  <View className="absolute -bottom-3 -right-3 w-12 h-12 border-b-[6px] border-r-[6px] border-primary" />
+                  <Animated.View
+                    className="absolute w-full h-0.5 bg-primary"
+                    style={{ transform: [{ translateY: scanLineTranslateY }] }}
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
         <TouchableOpacity
-          className="bg-[#444] py-3 px-8 rounded-lg"
+          className="w-2/3 self-center bg-primary py-4 rounded-full mb-8"
           onPress={() => setScanned(false)}
         >
-          <Text className="text-white text-lg">Scan Again</Text>
+          <Text className="text-white text-center text-lg font-semibold">
+            Scan Again
+          </Text>
         </TouchableOpacity>
       </View>
-      <Text className="text-gray-400 text-sm text-center mb-5">
-        The QR Code will be automatically detected when you position it between
-        the guide lines
-      </Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  camera: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+});

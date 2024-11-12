@@ -1,10 +1,18 @@
 import React from "react";
-import { View, Text, TextInput, Image, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema, LoginType } from "@/types/auth.types";
 import { useAuth } from "@/hooks/useAuth";
+import { CommonActions } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 
 export default function LoginScreen() {
@@ -22,10 +30,17 @@ export default function LoginScreen() {
   const onSubmit = (data: LoginType) => {
     loginMutation.mutate(data, {
       onSuccess: () => {
-        navigation.navigate("barcode" as never);
-      }
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: "device" }],
+          })
+        );
+      },
+      onError: () => {
+        form.reset();
+      },
     });
-    form.reset();
   };
 
   return (
@@ -45,6 +60,11 @@ export default function LoginScreen() {
       <Text className="text-sm text-gray-500 text-center mb-8">
         Enter your email and password to log in
       </Text>
+      {loginMutation.isError && (
+        <Text className="text-red-500 text-xs mb-4 px-3">
+          {loginMutation.error.message}
+        </Text>
+      )}
       <View className="flex-row items-center border border-gray-300 rounded-lg p-3 mb-4">
         <Controller
           control={form.control}
@@ -95,10 +115,17 @@ export default function LoginScreen() {
         </Text>
       )}
       <Pressable
-        className="w-full bg-primary rounded-xl py-3 flex flex-row items-center px-8 justify-center"
+        className={`${
+          loginMutation.isPending ? `bg-primary/50` : `bg-primary`
+        } w-full rounded-xl py-3 flex flex-row items-center px-8 justify-center`}
         onPress={form.handleSubmit(onSubmit)}
+        disabled={loginMutation.isPending}
       >
-        <Text className="text-white text-lg font-bold ">Log in</Text>
+        {loginMutation.isPending ? (
+            <ActivityIndicator size="small" color="#fff"/>
+        ) : (
+          <Text className="text-white">Sign in</Text>
+        )}
       </Pressable>
 
       <Text className="text-center text-gray-500 mt-4">
