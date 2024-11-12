@@ -1,25 +1,25 @@
 {
   "expo": {
-    "name": "stitchtly-barscanner",
+    "name": "Stitchtly BarScanner",
     "slug": "stitchtly-barscanner",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/stitchly-logo2.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/stitchly-logo2.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "bundleIdentifier": "com.yourcompany.stitchtlybarscanner",
+      "bundleIdentifier": "com.stichtly.stitchtlybarscanner",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.yourcompany.stitchtlybarscanner",
+      "package": "com.stichtly.stitchtlybarscanner",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/stitchly-logo2.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
