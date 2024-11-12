@@ -79,6 +79,7 @@ export default function LoginScreen() {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                readOnly={loginMutation.isPending}
               />
               <FontAwesome name="envelope" size={20} color="#9ca3af" />
             </>
@@ -103,6 +104,7 @@ export default function LoginScreen() {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                readOnly={loginMutation.isPending}
               />
               <FontAwesome name="lock" size={20} color="#9ca3af" />
             </>
