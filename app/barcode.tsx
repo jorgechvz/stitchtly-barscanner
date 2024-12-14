@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   View,
   Text,
@@ -27,8 +28,11 @@ import CameraPermission from "@/components/permissions/CameraPermission";
 import { buttonVariants } from "@/~/components/ui/button";
 import { useNavigation } from "expo-router";
 import { CommonActions } from "@react-navigation/native";
+import { Check } from "lucide-react-native";
 
 export default function QRScannerScreen() {
+  const insets = useSafeAreaInsets();
+  const [actionType, setActionType] = useState<string>("decrease");
   const { writeData, disconnectFromDevice } = useBLE();
   const navigation = useNavigation();
   const [dialogVisible, setDialogVisible] = useState(false);
@@ -81,7 +85,8 @@ export default function QRScannerScreen() {
     setDialogVisible(false);
   };
   const sendDataToESP32 = () => {
-    const base64Data = base64.encode(scannedData);
+    const encodedAction = actionType === "increase" ? "INC" : "DEC";
+    const base64Data = base64.encode(`${encodedAction}:${scannedData}`);
     setScanned(false);
     writeData(base64Data);
     hideDialog();
@@ -154,7 +159,52 @@ export default function QRScannerScreen() {
               </View>
             </View>
           </View>
+          <View className="flex-row justify-around mt-6 gap-x-6">
+            <TouchableOpacity
+              className={`flex-row items-center justify-center p-3 rounded-lg border w-[150px] ${
+                actionType === "increase"
+                  ? "bg-primary border-primary"
+                  : "bg-white border-gray-300"
+              }`}
+              onPress={() => setActionType("increase")}
+            >
+              {actionType === "increase" && (
+                <View className="mr-2">
+                  <Check size={20} color="#FFF" />
+                </View>
+              )}
+              <Text
+                className={`font-semibold ${
+                  actionType === "increase" ? "text-white" : "text-gray-600"
+                }`}
+              >
+                Increase
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className={`flex-row items-center justify-center p-3 rounded-lg border w-[150px] ${
+                actionType === "decrease"
+                  ? "bg-primary border-primary"
+                  : "bg-white border-gray-300"
+              }`}
+              onPress={() => setActionType("decrease")}
+            >
+              {actionType === "decrease" && (
+                <View className="mr-2">
+                  <Check size={20} color="#FFF" />
+                </View>
+              )}
+              <Text
+                className={`font-semibold ${
+                  actionType === "decrease" ? "text-white" : "text-gray-600"
+                }`}
+              >
+                Decrease
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
+
         <TouchableOpacity
           className="w-2/3 self-center bg-primary py-4 rounded-full mb-8"
           onPress={disconnectDevice}
